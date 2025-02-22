@@ -7,7 +7,7 @@
     "sourceMap": true, // ensure debuggable
     "moduleResolution": "node", // suppresses issue with `default` or `export`
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports" : true,
+    "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "outDir": "./dist"
   },

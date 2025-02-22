@@ -1,7 +1,7 @@
-import { Language, Maybe, ModalContainer, TransitionElement } from './types';
+import { Language, Maybe, ModalContainer, TransitionElement } from "./types";
 
 export const hasWindow = () => {
-  return typeof window !== 'undefined';
+  return typeof window !== "undefined";
 };
 
 export const safeNum = (num?: null | number | string) => {
@@ -9,22 +9,22 @@ export const safeNum = (num?: null | number | string) => {
 };
 
 export const onAnimationEnd = (el: HTMLElement, func: (e: Event) => void) => {
-  el.addEventListener('animationend', func);
+  el.addEventListener("animationend", func);
 };
 
 export const onTransitionEnd = (
   el: TransitionElement | ModalContainer,
-  func: (e: Event) => void
+  func: (e: Event) => void,
 ) => {
   if (!el.transitionEndEvent) {
     el.transitionEndEvent = true;
-    el.addEventListener('transitionend', func);
+    el.addEventListener("transitionend", func);
   }
 };
 
 export const prepend = (
   parent?: HTMLElement | null,
-  child?: HTMLElement | null
+  child?: HTMLElement | null,
 ) => {
   if (!child || !parent) {
     return;
@@ -38,14 +38,14 @@ export const prepend = (
 };
 
 export const generateId = (): string => {
-  return 'stories-' + Math.random().toString(36).substr(2, 9);
+  return "stories-" + Math.random().toString(36).substr(2, 9);
 };
 
 export const findPos = function (
   obj?: Maybe<HTMLElement>,
   offsetY?: number,
   offsetX?: number,
-  stop?: Maybe<HTMLElement>
+  stop?: Maybe<HTMLElement>,
 ): [number, number] {
   let curleft = 0;
   let curtop = 0;
@@ -75,7 +75,7 @@ export const findPos = function (
 };
 export const timeAgo = (
   time?: Maybe<number | string | Date>,
-  languageObject?: Language
+  languageObject?: Language,
 ) => {
   const language = languageObject?.time || undefined;
 
@@ -86,14 +86,14 @@ export const timeAgo = (
   const dateStr = dateObj.getTime();
   let seconds = (new Date().getTime() - dateStr) / 1000;
 
-  const formats: [number, string, number | ''][] = [
-    [60, ` ${language?.seconds || ''}`, 1], // 60
-    [120, `1 ${language?.minute || ''}`, ''], // 60*2
-    [3600, ` ${language?.minutes || ''}`, 60], // 60*60, 60
-    [7200, `1 ${language?.hour || ''}`, ''], // 60*60*2
-    [86400, ` ${language?.hours || ''}`, 3600], // 60*60*24, 60*60
-    [172800, ` ${language?.yesterday || ''}`, ''], // 60*60*24*2
-    [604800, ` ${language?.days || ''}`, 86400]
+  const formats: [number, string, number | ""][] = [
+    [60, ` ${language?.seconds || ""}`, 1], // 60
+    [120, `1 ${language?.minute || ""}`, ""], // 60*2
+    [3600, ` ${language?.minutes || ""}`, 60], // 60*60, 60
+    [7200, `1 ${language?.hour || ""}`, ""], // 60*60*2
+    [86400, ` ${language?.hours || ""}`, 3600], // 60*60*24, 60*60
+    [172800, ` ${language?.yesterday || ""}`, ""], // 60*60*24*2
+    [604800, ` ${language?.days || ""}`, 86400],
   ];
 
   let currentFormat = 1;
@@ -107,7 +107,7 @@ export const timeAgo = (
   formats.forEach((format) => {
     const formatKey = format[0];
     if (seconds < formatKey && !result) {
-      if (typeof format[2] === 'string') {
+      if (typeof format[2] === "string") {
         result = format[currentFormat];
       } else if (format !== null) {
         result = Math.floor(seconds / format[2]) + format[1];

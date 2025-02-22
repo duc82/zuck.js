@@ -1,6 +1,6 @@
-import { generateId, hasWindow, prepend, safeNum, timeAgo } from './utils';
-import { loadOptions } from './options';
-import { modal as ZuckModal } from './modal';
+import { generateId, hasWindow, prepend, safeNum, timeAgo } from "./utils";
+import { loadOptions } from "./options";
+import { modal as ZuckModal } from "./modal";
 
 import {
   Maybe,
@@ -8,12 +8,12 @@ import {
   StoryItem,
   TimelineItem,
   Zuck as ZuckFunction,
-  ZuckObject
-} from './types';
+  ZuckObject,
+} from "./types";
 
 export const Zuck: ZuckFunction = function (timeline, options) {
   if (!timeline.id) {
-    timeline.setAttribute('id', generateId());
+    timeline.setAttribute("id", generateId());
   }
 
   const id = timeline.id;
@@ -21,16 +21,16 @@ export const Zuck: ZuckFunction = function (timeline, options) {
     option,
     callback: callbackOption,
     template: templateOption,
-    language: languageOption
+    language: languageOption,
   } = loadOptions(options);
 
-  const data: StoriesTimeline = option('stories') || [];
-  const internalData: ZuckObject['internalData'] = {};
+  const data: StoriesTimeline = option("stories") || [];
+  const internalData: ZuckObject["internalData"] = {};
 
   /* data functions */
   const saveLocalData = function <T>(key: string, data: T) {
     try {
-      if (option('localStorage') && hasWindow()) {
+      if (option("localStorage") && hasWindow()) {
         const keyName = `zuck-${id}-${key}`;
 
         window.localStorage[keyName] = JSON.stringify(data);
@@ -39,7 +39,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
   };
 
   const getLocalData = function <T>(key: string): T | undefined {
-    if (option('localStorage') && hasWindow()) {
+    if (option("localStorage") && hasWindow()) {
       const keyName = `zuck-${id}-${key}`;
 
       return window.localStorage[keyName]
@@ -50,12 +50,12 @@ export const Zuck: ZuckFunction = function (timeline, options) {
     }
   };
 
-  internalData.seenItems = getLocalData('seenItems') || {};
+  internalData.seenItems = getLocalData("seenItems") || {};
 
   const playVideoItem = function (
     storyViewer?: Maybe<HTMLElement>,
     elements?: NodeListOf<Element> | Element[],
-    unmute?: Event
+    unmute?: Event,
   ) {
     const itemElement = elements?.[1];
     const itemPointer = elements?.[0];
@@ -69,8 +69,8 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       cur.pause();
     }
 
-    if (itemElement.getAttribute('data-type') === 'video') {
-      const video = itemElement.querySelector<HTMLVideoElement>('video');
+    if (itemElement.getAttribute("data-type") === "video") {
+      const video = itemElement.querySelector<HTMLVideoElement>("video");
       if (!video) {
         internalData.currentVideoElement = undefined;
 
@@ -80,7 +80,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       const setDuration = function () {
         let duration = video.duration;
         const itemPointerProgress =
-          itemPointer.querySelector<HTMLElement>('.progress');
+          itemPointer.querySelector<HTMLElement>(".progress");
 
         if (+video.dataset.length) {
           duration = +video.dataset.length;
@@ -92,7 +92,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       };
 
       setDuration();
-      video.addEventListener('loadedmetadata', setDuration);
+      video.addEventListener("loadedmetadata", setDuration);
       internalData.currentVideoElement = video;
 
       video.play();
@@ -100,14 +100,14 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       try {
         unmuteVideoItem(video, storyViewer);
       } catch (e) {
-        console.warn('Could not unmute video', unmute);
+        console.warn("Could not unmute video", unmute);
       }
     } else {
       internalData.currentVideoElement = undefined;
     }
   };
 
-  const findStoryIndex = function (id: TimelineItem['id']) {
+  const findStoryIndex = function (id: TimelineItem["id"]) {
     return data.findIndex((item: TimelineItem) => item.id === id);
   };
 
@@ -122,11 +122,11 @@ export const Zuck: ZuckFunction = function (timeline, options) {
 
   const unmuteVideoItem = function (
     video: HTMLVideoElement,
-    storyViewer?: Maybe<HTMLElement>
+    storyViewer?: Maybe<HTMLElement>,
   ) {
     video.muted = false;
     video.volume = 1.0;
-    video.removeAttribute('muted');
+    video.removeAttribute("muted");
     video.play();
 
     if (video.paused) {
@@ -135,54 +135,54 @@ export const Zuck: ZuckFunction = function (timeline, options) {
     }
 
     if (storyViewer) {
-      storyViewer?.classList.remove('paused');
+      storyViewer?.classList.remove("paused");
     }
   };
 
   const parseItems = function (
     story?: Maybe<HTMLElement>,
-    forceUpdate?: boolean
+    forceUpdate?: boolean,
   ) {
-    const storyId = story?.getAttribute('data-id') || '';
+    const storyId = story?.getAttribute("data-id") || "";
     const storyIndex = findStoryIndex(storyId);
     const storyItems = document.querySelectorAll<HTMLElement>(
-      `#${id} [data-id="${storyId}"] .items > li`
+      `#${id} [data-id="${storyId}"] .items > li`,
     );
     const items: StoryItem[] = [];
 
-    if (!option('reactive') || forceUpdate) {
+    if (!option("reactive") || forceUpdate) {
       storyItems.forEach(({ firstElementChild }: HTMLElement) => {
         const a = firstElementChild;
         const img = a?.firstElementChild;
         const li = a?.parentElement;
 
         const item: StoryItem = {
-          id: a?.getAttribute('data-id') || li?.getAttribute('data-id'),
-          src: a?.getAttribute('href'),
-          length: safeNum(a?.getAttribute('data-length')),
-          type: a?.getAttribute('data-type'),
-          time: a?.getAttribute('data-time') || li?.getAttribute('data-time'),
-          link: a?.getAttribute('data-link') || '',
-          linkText: a?.getAttribute('data-linkText'),
-          preview: img?.getAttribute('src'),
-          seen: li?.classList.contains('seen')
+          id: a?.getAttribute("data-id") || li?.getAttribute("data-id"),
+          src: a?.getAttribute("href"),
+          length: safeNum(a?.getAttribute("data-length")),
+          type: a?.getAttribute("data-type"),
+          time: a?.getAttribute("data-time") || li?.getAttribute("data-time"),
+          link: a?.getAttribute("data-link") || "",
+          linkText: a?.getAttribute("data-linkText"),
+          preview: img?.getAttribute("src"),
+          seen: li?.classList.contains("seen"),
         };
 
         const all = a?.attributes;
         const reserved = [
-          'data-id',
-          'href',
-          'data-length',
-          'data-type',
-          'data-time',
-          'data-link',
-          'data-linkText'
+          "data-id",
+          "href",
+          "data-length",
+          "data-type",
+          "data-time",
+          "data-link",
+          "data-linkText",
         ];
 
         if (all) {
           for (let z = 0; z < all.length; z++) {
             if (reserved.indexOf(all[z].nodeName) === -1) {
-              item[all[z].nodeName.replace('data-', '')] = all?.[z].nodeValue;
+              item[all[z].nodeName.replace("data-", "")] = all?.[z].nodeValue;
             }
           }
         }
@@ -193,7 +193,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
 
       data[storyIndex].items = items;
 
-      const callback = callbackOption('onDataUpdate');
+      const callback = callbackOption("onDataUpdate");
 
       if (callback) {
         callback(data, () => {});
@@ -202,7 +202,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
   };
 
   const parseStory = function (story?: Maybe<HTMLElement>) {
-    const storyId = story?.getAttribute('data-id') || '';
+    const storyId = story?.getAttribute("data-id") || "";
     const storyIndex = findStoryIndex(storyId);
 
     let seen = false;
@@ -218,12 +218,12 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       }
 
       storyData.id = storyId;
-      storyData.photo = story?.getAttribute('data-photo');
-      storyData.name = story?.querySelector<HTMLElement>('.name')?.innerText;
-      storyData.link = story?.querySelector('.item-link')?.getAttribute('href');
+      storyData.photo = story?.getAttribute("data-photo");
+      storyData.name = story?.querySelector<HTMLElement>(".name")?.innerText;
+      storyData.link = story?.querySelector(".item-link")?.getAttribute("href");
       storyData.lastUpdated = safeNum(
-        story?.getAttribute('data-last-updated') ||
-          story?.getAttribute('data-time')
+        story?.getAttribute("data-last-updated") ||
+          story?.getAttribute("data-time"),
       );
 
       storyData.seen = seen;
@@ -239,7 +239,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       }
     } catch (e) {
       data[storyIndex] = {
-        items: []
+        items: [],
       };
     }
 
@@ -251,7 +251,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       };
     }
 
-    const callback = callbackOption('onDataUpdate');
+    const callback = callbackOption("onDataUpdate");
 
     if (callback) {
       callback(data, () => {});
@@ -259,17 +259,17 @@ export const Zuck: ZuckFunction = function (timeline, options) {
   };
 
   const add = (data: TimelineItem, append?: boolean) => {
-    const storyId = data['id'] || '';
+    const storyId = data["id"] || "";
     const storyEl = document.querySelector<HTMLElement>(
-      `#${id} [data-id="${storyId}"]`
+      `#${id} [data-id="${storyId}"]`,
     );
-    const items = data['items'];
+    const items = data["items"];
 
     let story: Maybe<HTMLElement> = null;
     let preview: string | undefined = undefined;
 
     if (items?.[0]) {
-      preview = items?.[0]?.preview || '';
+      preview = items?.[0]?.preview || "";
     }
 
     if (internalData.seenItems[storyId] === true) {
@@ -281,8 +281,8 @@ export const Zuck: ZuckFunction = function (timeline, options) {
     }
 
     if (!storyEl) {
-      const storyItem = document.createElement('div');
-      storyItem.innerHTML = templateOption('timelineItem')(data);
+      const storyItem = document.createElement("div");
+      storyItem.innerHTML = templateOption("timelineItem")(data);
 
       story = storyItem.firstElementChild as HTMLElement;
     } else {
@@ -291,25 +291,25 @@ export const Zuck: ZuckFunction = function (timeline, options) {
 
     if (data.seen === false) {
       internalData.seenItems[storyId] = false;
-      saveLocalData('seenItems', internalData.seenItems);
+      saveLocalData("seenItems", internalData.seenItems);
     }
 
-    story?.setAttribute('data-id', storyId);
-    if (data['photo']) {
-      story?.setAttribute('data-photo', data['photo']);
+    story?.setAttribute("data-id", storyId);
+    if (data["photo"]) {
+      story?.setAttribute("data-photo", data["photo"]);
     }
 
-    story?.setAttribute('data-time', data['time']?.toString());
+    story?.setAttribute("data-time", data["time"]?.toString());
 
-    if (data['lastUpdated']) {
-      story?.setAttribute('data-last-updated', data['lastUpdated']?.toString());
+    if (data["lastUpdated"]) {
+      story?.setAttribute("data-last-updated", data["lastUpdated"]?.toString());
     } else {
-      story?.setAttribute('data-last-updated', data['time']?.toString());
+      story?.setAttribute("data-last-updated", data["time"]?.toString());
     }
 
     parseStory(story);
 
-    if (!storyEl && !option('reactive')) {
+    if (!storyEl && !option("reactive")) {
       if (append) {
         timeline.appendChild(story as Node);
       } else {
@@ -334,7 +334,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
 
   const remove = (storyId: string) => {
     const story = document.querySelector<HTMLElement>(
-      `#${id} > [data-id="${storyId}"]`
+      `#${id} > [data-id="${storyId}"]`,
     );
 
     story?.parentNode?.removeChild(story);
@@ -342,19 +342,19 @@ export const Zuck: ZuckFunction = function (timeline, options) {
 
   const addItem = (storyId: string, data: StoryItem, append: boolean) => {
     const story = document.querySelector<HTMLElement>(
-      `#${id} > [data-id="${storyId}"]`
+      `#${id} > [data-id="${storyId}"]`,
     );
 
-    if (!option('reactive')) {
-      const li = document.createElement('li');
-      const el = story?.querySelectorAll<HTMLElement>('.items')[0];
+    if (!option("reactive")) {
+      const li = document.createElement("li");
+      const el = story?.querySelectorAll<HTMLElement>(".items")[0];
 
-      if (data['id']) {
-        li.className = data['seen'] ? 'seen' : '';
-        li.setAttribute('data-id', data['id']);
+      if (data["id"]) {
+        li.className = data["seen"] ? "seen" : "";
+        li.setAttribute("data-id", data["id"]);
       }
 
-      li.innerHTML = templateOption('timelineStoryItem')(data);
+      li.innerHTML = templateOption("timelineStoryItem")(data);
 
       if (append) {
         el?.appendChild(li);
@@ -368,15 +368,15 @@ export const Zuck: ZuckFunction = function (timeline, options) {
 
   const removeItem = (storyId: string, itemId: string) => {
     const item = document.querySelector<HTMLElement>(
-      `#${id} > [data-id="${storyId}"] [data-id="${itemId}"]`
+      `#${id} > [data-id="${storyId}"] [data-id="${itemId}"]`,
     );
 
-    if (!option('reactive')) {
+    if (!option("reactive")) {
       item?.parentNode?.removeChild(item as Node);
       data.forEach((story: TimelineItem) => {
         if (story.id === storyId) {
           story.items = story.items.filter(
-            (item: StoryItem) => item.id !== itemId
+            (item: StoryItem) => item.id !== itemId,
           );
         }
       });
@@ -384,85 +384,85 @@ export const Zuck: ZuckFunction = function (timeline, options) {
   };
 
   const nextItem = (
-    direction?: 'previous' | 'next',
-    event?: Event
+    direction?: "previous" | "next",
+    event?: Event,
   ): boolean => {
     const currentStory = internalData.currentStory;
     const currentStoryIndex = findStoryIndex(internalData.currentStory);
     const currentItem = data[currentStoryIndex].currentItem;
     const storyViewer = document.querySelector<HTMLElement>(
-      `#zuck-modal .story-viewer[data-story-id="${currentStory}"]`
+      `#zuck-modal .story-viewer[data-story-id="${currentStory}"]`,
     );
-    const directionNumber = direction === 'previous' ? -1 : 1;
+    const directionNumber = direction === "previous" ? -1 : 1;
 
     if (!storyViewer) {
       return false;
     }
 
     const currentItemElements = storyViewer.querySelectorAll<HTMLElement>(
-      `[data-index="${currentItem}"]`
+      `[data-index="${currentItem}"]`,
     );
     const currentPointer = currentItemElements[0];
     const currentItemElement = currentItemElements[1];
 
     const navigateItem = currentItem + directionNumber;
     const nextItems = storyViewer.querySelectorAll<HTMLElement>(
-      `[data-index="${navigateItem}"]`
+      `[data-index="${navigateItem}"]`,
     );
     const nextPointer = nextItems[0];
     const nextItem = nextItems[1];
 
     if (storyViewer && nextPointer && nextItem) {
       const navigateItemCallback = function () {
-        if (direction === 'previous') {
-          currentPointer?.classList.remove('seen');
-          currentItemElement?.classList.remove('seen');
+        if (direction === "previous") {
+          currentPointer?.classList.remove("seen");
+          currentItemElement?.classList.remove("seen");
         } else {
-          currentPointer?.classList.add('seen');
-          currentItemElement?.classList.add('seen');
+          currentPointer?.classList.add("seen");
+          currentItemElement?.classList.add("seen");
         }
 
-        currentPointer?.classList.remove('active');
-        currentItemElement?.classList.remove('active');
+        currentPointer?.classList.remove("active");
+        currentItemElement?.classList.remove("active");
 
-        nextPointer?.classList.remove('seen');
-        nextPointer?.classList.add('active');
+        nextPointer?.classList.remove("seen");
+        nextPointer?.classList.add("active");
 
-        nextItem?.classList.remove('seen');
-        nextItem?.classList.add('active');
+        nextItem?.classList.remove("seen");
+        nextItem?.classList.add("active");
 
         storyViewer
-          .querySelectorAll<HTMLDivElement>('.time')
+          .querySelectorAll<HTMLDivElement>(".time")
           .forEach((el: HTMLDivElement) => {
             el.innerText = timeAgo(
-              Number(nextItem.getAttribute('data-time')),
-              option('language')
+              Number(nextItem.getAttribute("data-time")),
+              option("language"),
             );
           });
 
         data[currentStoryIndex].currentItem =
           data[currentStoryIndex].currentItem + directionNumber;
 
-        const nextVideo = nextItem.querySelector('video');
+        const nextVideo = nextItem.querySelector("video");
         if (nextVideo) {
           nextVideo.currentTime = 0;
         }
         playVideoItem(storyViewer, nextItems, event);
       };
 
-      let callback = callbackOption('onNavigateItem');
+      let callback = callbackOption("onNavigateItem");
 
       callback = !callback
-        ? callbackOption('onNextItem')
-        : callbackOption('onNavigateItem');
+        ? callbackOption("onNextItem")
+        : callbackOption("onNavigateItem");
 
       callback(
         currentStory,
-        nextItem.getAttribute('data-story-id'),
-        navigateItemCallback
+        nextItem.getAttribute("data-story-id"),
+        navigateItemCallback,
       );
     } else if (storyViewer) {
-      if (direction !== 'previous') {
+      if (direction !== "previous") {
         modal.next();
       }
     }
@@ -476,14 +476,14 @@ export const Zuck: ZuckFunction = function (timeline, options) {
     document
       .querySelectorAll<HTMLElement>(`#${id} .story.seen`)
       .forEach((el: HTMLElement) => {
-        const storyId = el?.getAttribute('data-id');
+        const storyId = el?.getAttribute("data-id");
         const storyIndex = findStoryIndex(storyId);
 
         if (storyId) {
           const newData = data[storyIndex];
           const timeline = el?.parentNode;
 
-          if (!option('reactive') && timeline) {
+          if (!option("reactive") && timeline) {
             timeline.removeChild(el);
           }
 
@@ -493,33 +493,33 @@ export const Zuck: ZuckFunction = function (timeline, options) {
   };
 
   const init = (): ZuckObject => {
-    if (timeline && timeline.querySelector('.story')) {
-      timeline.querySelectorAll<HTMLElement>('.story').forEach((story) => {
+    if (timeline && timeline.querySelector(".story")) {
+      timeline.querySelectorAll<HTMLElement>(".story").forEach((story) => {
         parseStory(story);
         parseItems(story);
       });
     }
 
-    if (option('backNative') && hasWindow()) {
+    if (option("backNative") && hasWindow()) {
       if (window.location.hash === `#!${id}`) {
-        window.location.hash = '';
+        window.location.hash = "";
       }
 
       window.addEventListener(
-        'popstate',
+        "popstate",
         () => {
           if (window.location.hash !== `#!${id}`) {
-            window.location.hash = '';
+            window.location.hash = "";
           }
         },
-        false
+        false,
       );
     }
 
-    if (!option('reactive')) {
+    if (!option("reactive")) {
       const seenItems = getLocalData<{
         [keyName: string]: number;
-      }>('seenItems');
+      }>("seenItems");
 
       if (seenItems) {
         Object.entries(seenItems).forEach(([, key]) => {
@@ -530,18 +530,18 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       }
     }
 
-    option('stories').forEach((item: TimelineItem) => {
+    option("stories").forEach((item: TimelineItem) => {
       add(item, true);
     });
 
     updateStorySeenPosition();
 
-    const avatars = option('avatars') ? 'user-icon' : 'story-preview';
-    const list = option('list') ? 'list' : 'carousel';
-    const rtl = option('rtl') ? 'rtl' : '';
+    const avatars = option("avatars") ? "user-icon" : "story-preview";
+    const list = option("list") ? "list" : "carousel";
+    const rtl = option("rtl") ? "rtl" : "";
 
     timeline.className += ` stories ${avatars} ${list} ${`${option(
-      'skin'
+      "skin",
     )}`.toLowerCase()} ${rtl}`;
 
     return {
@@ -566,7 +566,7 @@ export const Zuck: ZuckFunction = function (timeline, options) {
       updateStorySeenPosition,
       playVideoItem,
       pauseVideoItem,
-      unmuteVideoItem
+      unmuteVideoItem,
     };
   };
 

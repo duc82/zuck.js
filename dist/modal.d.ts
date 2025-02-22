@@ -1,6 +1,6 @@
-import { ZuckObject } from 'types';
+import { TimelineItem, ZuckObject } from "types";
 export declare const modal: (zuck: ZuckObject) => {
-    show: (storyId?: string) => void;
-    next: () => void;
-    close: () => void;
+  show: (storyId?: TimelineItem["id"]) => void;
+  next: () => void;
+  close: () => void;
 };

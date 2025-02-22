@@ -6,19 +6,19 @@ const timestamp = function () {
 };
 
 const changeSkin = function (skin) {
-  location.href = location.href.split('#')[0].split('?')[0] + '?skin=' + skin;
+  location.href = location.href.split("#")[0].split("?")[0] + "?skin=" + skin;
 };
 
 const getCurrentSkin = function () {
-  const header = document.getElementById('header');
-  let skin = location.href.split('skin=')[1];
+  const header = document.getElementById("header");
+  let skin = location.href.split("skin=")[1];
 
   if (!skin) {
-    skin = 'Snapgram';
+    skin = "Snapgram";
   }
 
-  if (skin.indexOf('#') !== -1) {
-    skin = skin.split('#')[0];
+  if (skin.indexOf("#") !== -1) {
+    skin = skin.split("#")[0];
   }
 
   const skins = {
@@ -27,7 +27,7 @@ const getCurrentSkin = function () {
       list: false,
       autoFullScreen: false,
       cubeEffect: true,
-      paginationArrows: false
+      paginationArrows: false,
     },
 
     VemDeZAP: {
@@ -35,7 +35,7 @@ const getCurrentSkin = function () {
       list: true,
       autoFullScreen: false,
       cubeEffect: false,
-      paginationArrows: true
+      paginationArrows: true,
     },
 
     FaceSnap: {
@@ -43,7 +43,7 @@ const getCurrentSkin = function () {
       list: false,
       autoFullScreen: true,
       cubeEffect: false,
-      paginationArrows: true
+      paginationArrows: true,
     },
 
     Snapssenger: {
@@ -51,27 +51,27 @@ const getCurrentSkin = function () {
       list: false,
       autoFullScreen: false,
       cubeEffect: false,
-      paginationArrows: false
-    }
+      paginationArrows: false,
+    },
   };
 
-  const el = document.querySelectorAll('#skin option');
+  const el = document.querySelectorAll("#skin option");
   const total = el.length;
   for (let i = 0; i < total; i++) {
     const what = skin == el[i].value;
 
     if (what) {
-      el[i].setAttribute('selected', 'selected');
+      el[i].setAttribute("selected", "selected");
 
       header.innerHTML = skin;
       header.className = skin;
     } else {
-      el[i].removeAttribute('selected');
+      el[i].removeAttribute("selected");
     }
   }
 
   return {
     name: skin,
-    params: skins[skin]
+    params: skins[skin],
   };
 };

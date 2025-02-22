@@ -17,7 +17,7 @@ export interface DocumentElementWithFullscreen extends HTMLElement {
 
 export type ModalContainer = HTMLDivElement & {
   modal?: {
-    show: (storyId?: TimelineItem['id']) => void;
+    show: (storyId?: TimelineItem["id"]) => void;
     next: () => void;
     close: () => void;
   };
@@ -65,13 +65,13 @@ export type Templates = {
   viewerItemPointer: (
     index: number,
     currentIndex: number,
-    item: StoryItem
+    item: StoryItem,
   ) => string;
   viewerItemPointerProgress: (style: string) => string;
   viewerItemBody: (
     index: number,
     currentIndex: number,
-    item: StoryItem
+    item: StoryItem,
   ) => string;
 };
 
@@ -84,12 +84,12 @@ export type Callbacks = {
   onNextItem: (
     storyId: string,
     nextStoryId: string,
-    callback: () => void
+    callback: () => void,
   ) => void;
   onNavigateItem: (
     storyId: string,
     nextStoryId: string,
-    callback: () => void
+    callback: () => void,
   ) => void;
 };
 
@@ -155,7 +155,7 @@ export type ZuckObject = {
   saveLocalData?: <T>(key: string, data: T) => void;
   getLocalData?: <T>(key: string) => T | undefined;
   internalData: {
-    currentStory?: TimelineItem['id'];
+    currentStory?: TimelineItem["id"];
     currentVideoElement?: Maybe<HTMLVideoElement>;
     seenItems?: {
       [keyName: string]: boolean;
@@ -166,12 +166,12 @@ export type ZuckObject = {
   playVideoItem: (
     storyViewer?: Maybe<HTMLElement>,
     elements?: NodeListOf<Element>,
-    unmute?: Event
+    unmute?: Event,
   ) => void;
   pauseVideoItem: () => void;
   unmuteVideoItem: (
     video: HTMLVideoElement,
-    storyViewer?: Maybe<HTMLElement>
+    storyViewer?: Maybe<HTMLElement>,
   ) => void;
 };
 

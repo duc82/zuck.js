@@ -1,6 +1,3 @@
-/*!************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./src/styles/modal.css ***!
-  \************************************************************************/
 @keyframes zuckSlideTime {
   0% {
     max-width: 0;
@@ -91,7 +88,9 @@
   -webkit-transition: -webkit-transform 0.25s linear;
   transition: -webkit-transform 0.25s linear;
   transition: transform 0.25s linear;
-  transition: transform 0.25s linear, -webkit-transform 0.25s linear;
+  transition:
+    transform 0.25s linear,
+    -webkit-transform 0.25s linear;
 }
 
 #zuck-modal.with-cube #zuck-modal-content {
@@ -128,7 +127,12 @@
 #zuck-modal-content .story-viewer.paused.longPress .tip {
   opacity: 0;
 }
-#zuck-modal-content .story-viewer.viewing:not(.paused):not(.stopped) .slides-pointers > * > .active > .progress {
+#zuck-modal-content
+  .story-viewer.viewing:not(.paused):not(.stopped)
+  .slides-pointers
+  > *
+  > .active
+  > .progress {
   -webkit-animation-play-state: running;
   animation-play-state: running;
 }
@@ -222,7 +226,9 @@
   z-index: 100010;
   color: #fff;
   font-size: 14px;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35), 1px 0 1px rgba(0, 0, 0, 0.35);
+  text-shadow:
+    1px 1px 1px rgba(0, 0, 0, 0.35),
+    1px 0 1px rgba(0, 0, 0, 0.35);
   padding: 6px 12px;
 }
 #zuck-modal-content .story-viewer .head .item-preview {
@@ -318,7 +324,7 @@
 #zuck-modal-content .story-viewer .slides .item:before {
   z-index: 4;
   background: transparent;
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   right: 0;
@@ -356,7 +362,6 @@
   font-weight: 500;
   padding: 12px 24px;
 }
-
 
 #zuck-modal.rtl {
   direction: rtl;
@@ -495,15 +500,17 @@
   #zuck-modal.rtl #zuck-modal-content .story-viewer .head .left > .back {
     text-align: right;
   }
-  #zuck-modal.rtl #zuck-modal-content .story-viewer.with-back-button .head .left .item-preview {
+  #zuck-modal.rtl
+    #zuck-modal-content
+    .story-viewer.with-back-button
+    .head
+    .left
+    .item-preview {
     margin-left: auto;
     margin-right: 18px;
   }
 }
 
-/*!***************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./src/styles/timeline.css ***!
-  \***************************************************************************/
 .stories.carousel {
   white-space: nowrap;
   overflow: auto;
@@ -643,9 +650,3 @@
   margin-right: auto;
   margin-left: 12px;
 }
-
-/*!************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./src/styles/index.css ***!
-  \************************************************************************/
-
-
